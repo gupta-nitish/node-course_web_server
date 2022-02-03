@@ -5,6 +5,7 @@ const geocode = require("./util/geocode");
 const hbs = require('hbs')
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, '../public')
@@ -39,23 +40,30 @@ app.get("/weather", (req, res) => {
             error: "Address must be passed to get weather forcast"
         })
     }
-    geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
+    geocode(req.query.address, (error, body) => {
         if (error) {
             return res.send({ error })
         }
-        forcast(latitude, longitude, (error, forcastData) => {
-            if (error) {
-                return res.send({ error })
-            }
-            res.send({
-                location,
-                forcast :forcastData,
-                address : req.query.address
-            })
+        res.send({
+            body
         })
     })
 
-
+    // geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
+    //     if (error) {
+    //         return res.send({ error })
+    //     }
+    //     forcast(latitude, longitude, (error, forcastData) => {
+    //         if (error) {
+    //             return res.send({ error })
+    //         }
+    //         res.send({
+    //             location,
+    //             forcast :forcastData,
+    //             address : req.query.address
+    //         })
+    //     })
+    // })
 });
 
 app.get("/error", (req, res) => {
@@ -100,6 +108,6 @@ app.get('*', (req, res) => {
 })
 
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log("Server connected!!");
 })

@@ -10,7 +10,7 @@ weatherForm.addEventListener('submit', e => {
     var address = search.value
     messageOne.textContent = "Loading"
     messageTwo.textContent = ""
-    fetch("https://puzzle.mead.io/puzzle").then((res) => {
+    fetch("/weather?address="+address).then((res) => {
         console.log(res);
         res.json().then((data) => {
             console.log(data);
